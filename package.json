@@ -1,0 +1,11 @@
+{
+  "name": "scraper",
+  "version": "1.0.0",
+  "description": "scrapes websites",
+  "main": "app.js",
+  "author"       : "Tom Dane",
+  "dependencies" : {
+    "request"    : "latest",
+    "cheerio"    : "latest"
+  }
+}
