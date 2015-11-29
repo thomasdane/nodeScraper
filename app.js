@@ -1,14 +1,14 @@
-// Load the http module to create an http server.
-var http = require('http');
-
-// Configure our HTTP server to respond with Hello World to all requests.
-var server = http.createServer(function (request, response) {
-  response.writeHead(200, {"Content-Type": "text/plain"});
-  response.end("Hello World\n");
+var request = require("request"),
+	cheerio = require("cheerio"),
+	url = "http://www.wunderground.com/cgi-bin/findweather/getForecast?&query=" + 02888;
+	
+request(url, function (error, response, body) {
+	if (!error) {
+		var $ = cheerio.load(body),
+			temperature = $("[data-variable='temperature'] .wx-value").html();
+			
+		console.log("It’s " + temperature + " degrees Fahrenheit.");
+	} else {
+		console.log("We’ve encountered an error: " + error);
+	}
 });
-
-// Listen on port 8000, IP defaults to 127.0.0.1
-server.listen(8000);
-
-// Put a friendly message on the terminal
-console.log("Server running at http://127.0.0.1:8000/");
