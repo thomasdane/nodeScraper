@@ -1,6 +1,6 @@
-var request = require("request"),
-	cheerio = require("cheerio"),
-	url = "http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches";
+request = require("request"),
+cheerio = require("cheerio"),
+url = "http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches";
 	
 request(url, function (error, response, body) {
 	if (!error) {
