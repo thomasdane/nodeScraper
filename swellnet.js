@@ -1,6 +1,6 @@
 request = require("request"),
 cheerio = require("cheerio"),
-url = "http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches";
+url = "http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches";
 
 module.exports = {
 	scrape: function () {

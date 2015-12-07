@@ -7,7 +7,7 @@ module.exports = {
 		request(url, function (error, response, body) {
 			if (!error) {
 				var $ = cheerio.load(body),
-					title = $('.noMarginBottom').html();
+					title = $('p.noMarginBottom').html();
 					
 				console.log(title);
 			} else {
