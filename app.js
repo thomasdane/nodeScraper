@@ -5,13 +5,10 @@ var request = require("request"),
 request(url, function (error, response, body) {
 	if (!error) {
 		var $ = cheerio.load(body),
-			temperature = $('.field-content').html();
+			title = $('.field-content').html();
 			
-		console.log("It’s " + temperature + " degrees Fahrenheit.");
+		console.log(title);
 	} else {
 		console.log("We’ve encountered an error: " + error);
 	}
 });
-
-////*[@id="curTemp"]/span/span[1]
-//#curTemp > span > span.wx-value
