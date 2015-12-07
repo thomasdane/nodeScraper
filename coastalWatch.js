@@ -7,9 +7,16 @@ module.exports = {
 		request(url, function (error, response, body) {
 			if (!error) {
 				var $ = cheerio.load(body),
-					title = $('p.noMarginBottom').html();
-					
-				console.log(title);
+					swellHeight = $('.report.scrIcon.swell .val').html(),
+					swellDirection = $('.report.scrIcon.swell .dir').html(),
+					windDirection = $('.report.scrIcon.wind .dir').html(),
+					windSpeed = $('.report.scrIcon.wind .val').html(),
+					report = $('p.noMarginBottom').html()
+					;
+
+				console.log(swellHeight + ' ' + swellDirection);
+				console.log(windSpeed + ' ' + windDirection);
+				//console.log(report);
 			} else {
 				console.log("We’ve encountered an error: " + error);
 			}
