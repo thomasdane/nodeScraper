@@ -1,6 +1,6 @@
 request = require("request"),
 cheerio = require("cheerio"),
-url = "http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra";
+url = "http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra";
 
 module.exports = {
 	scrape: function () {
