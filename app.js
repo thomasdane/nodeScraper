@@ -1,5 +1,9 @@
 coastalWatch = require('./coastalWatch.js');
-coastalWatch = coastalWatch.scrape();
-
 swellnet = require('./swellnet.js');
-swellnet.scrape();
+CronJob = require('cron').CronJob;
+
+//run the scrape function every hour
+var job = new CronJob('00 00 * * * *', function() {
+	swellnet.scrape();
+	coastalWatch.scrape();
+}, null, true, 'Australia/Sydney')
