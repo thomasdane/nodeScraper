@@ -6,6 +6,7 @@
   "author"       : "Tom Dane",
   "dependencies" : {
     "request"    : "latest",
-    "cheerio"    : "latest"
+    "cheerio"    : "latest",
+    "cron"       : "latest"
   }
 }

@@ -1,4 +1,4 @@
-var databaseUrl =  "localhost/partywave";
+/*var databaseUrl =  "localhost/partywave";
 var collections = ["scrapeResults", "targetSites"];
 var mongojs = require("mongojs");
 var db = mongojs(databaseUrl, collections);
@@ -12,3 +12,4 @@ module.exports = {
 		});
 	}
 };
+*/
