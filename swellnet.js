@@ -9,7 +9,7 @@ module.exports = {
 			if (!error) {
 				var $ = cheerio.load(body),
 				title = $('.field-content').html();
-				db.save(title);
+				//db.save(title);
 				console.log('scraping swellnet')
 			} else {
 				console.log("We’ve encountered an error: " + error);
