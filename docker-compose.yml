@@ -1,8 +1,8 @@
-mongo:
-  image: mongo
+#mongo:
+#  image: mongo
 
 scraper:
-  build: ./
+  build: .
   
   
   

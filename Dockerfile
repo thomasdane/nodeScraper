@@ -1,8 +1,9 @@
 FROM nodesource/node:4.0
 
-ADD package.json package.json
+ADD . /src
+WORKDIR /src
 RUN npm install
-ADD . .
+RUN nodejs app.js
 
 CMD ["nodejs","app.js"]
 
