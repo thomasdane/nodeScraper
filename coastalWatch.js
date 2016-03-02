@@ -9,7 +9,7 @@ module.exports = {
 			if (!error) {
 				var $ = cheerio.load(body),
 				title = $('p.noMarginBottom').html();					
-				//db.save(title);
+				db.save(title);
 				console.log('scraping coastalwatch' + title)
 			} else {
 				console.log("We’ve encountered an error: " + error);
