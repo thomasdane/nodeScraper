@@ -1,17 +1,14 @@
-// Retrieve client
-var MongoClient = require('mongodb').MongoClient;
+var databaseUrl =  "localhost/partywave";
+var collections = ["scrapeResults", "targetSites"];
+var mongojs = require("mongojs");
+var db = mongojs(databaseUrl, collections);
+module.exports = db;
 
-// Connect to the db using docker host
-MongoClient.connect('mongodb://mongo:27017/blog', function(err, db) {
-    
-    
-    //err ? console.log("error") : console.log("no error");
-    
-    if(err) {
-        
-        console.log(err);
-    } else {
-        console.log("hello")
-    }
-        
-});
+module.exports = {
+  save: function (spot) {
+      db.scrapeResults.save({spot: spot}, function(err, saved) {
+      if( err || !saved ) console.log("results not saved");
+      else console.log("report saved")  
+    });
+  }
+};
