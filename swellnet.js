@@ -7,9 +7,22 @@ module.exports = {
 	scrape: function () {
 		request(swellNetUrl, function (error, response, body) {
 			if (!error) {
-				var $ = cheerio.load(body),
+					var $ = cheerio.load(body),
 				title = $('.field-content').html();
-				db.save(title);
+				
+
+				var result = {
+					"Name" : title,
+					"swellHeight": "1",
+					"swellDirection": "NE",
+					"period": "18s",
+					"windDirection": "W",
+					"windSpeed": "3 Knots",
+					"content": "blah"
+				}	
+
+				db.save(result);
+			
 				console.log('scraping swellnet')
 			} else {
 				console.log("We’ve encountered an error: " + error);
