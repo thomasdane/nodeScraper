@@ -1,7 +1,8 @@
-swellnet = require('./swellnet.js');
+scraper = require('./scraper.js');
 CronJob = require('cron').CronJob;
 
 //scrape websites on a timer 
 new CronJob('*/5 * * * * *', function() {
-	swellnet.scrape();
+	//scraper.scrapeSwellNet();
+	scraper.scrapeCoastalWatch();
 }, null, true, 'Australia/Sydney')
