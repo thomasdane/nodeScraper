@@ -14,20 +14,32 @@ module.exports = {
 		request(swellNetUrl, function (error, response, body) {
 			if (!error) {
 				$ = cheerio.load(body),
-				//title = $('.field-content').html();
+				
+				//get the text using JQuery
+				swell = $('.views-label-nothing').siblings('.field-content').html();
+				swellArray = swell.split(/\s(?=[A-Z])/);
+				period = $('.period').html();
+				wind = $('.views-label-field-surf-report-wind').siblings('.field-content').html();
+				windArray = wind.split(/ /);
+				content = $('.views-field-body').children('.field-content').children('p').html();
+				
+				//add text to report object
 				report = {
 							"Name" : "SwellNet",
-							"swellHeight": "1",
-							"swellDirection": "NE",
-							"period": "18s",
-							"windDirection": "W",
-							"windSpeed": "3 Knots",
-							"content": "fishes"
+							"swellHeight": swellArray[0],
+							"swellDirection": swellArray[1].replace(/ /g,''),
+							"period": period,
+							"windDirection": windArray[1],
+							"windSpeed": windArray[0],
+							"content": content
 						}	
 
 				result.reports.push(report);
-				console.log('scraping swellnet')
+				console.log('scraping swellnet');
 				db.save(result);
+				
+				//clear the report object for the next scrape
+				result.reports = []
 			} else {
 				console.log("We’ve encountered an error: " + error);
 			}
