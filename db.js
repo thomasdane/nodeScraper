@@ -6,7 +6,7 @@ module.exports = db;
 
 module.exports = {
   save: function (spot) {
-      db.scrapeResults.save({spot: spot}, function(err, saved) {
+      db.scrapeResults.save(spot, function(err, saved) {
       if( err || !saved ) console.log("results not saved");
       else console.log("report saved")  
     });
