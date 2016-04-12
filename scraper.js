@@ -2,6 +2,7 @@ request = require("request"),
 cheerio = require("cheerio"),
 db = require("./db");
 
+
 swellNetUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches";
 coastalWatchUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra";
 
@@ -10,7 +11,6 @@ var result = {
 	name: "Eastern Beaches", 
 	reports: []
 }
-
 
 exports.scrapeSwellNet = function () {
 	request(swellNetUrl, function (error, response, body) {
@@ -38,9 +38,6 @@ exports.scrapeSwellNet = function () {
 
 			result.reports.push(report);
 			console.log('scraping swellnet');
-			//db.save(result);
-			
-			
 
 		} else {
 			console.log("We’ve encountered an error: " + error);
@@ -51,30 +48,28 @@ exports.scrapeSwellNet = function () {
 exports.scrapeCoastalWatch = function () {
 	request(coastalWatchUrl, function (error, response, body) {
 		if (!error) {
-			$ = cheerio.load(body),
+			$ = cheerio.load(body);
 			
 			//get the text using JQuery
-			swellHeight = $('.swell').children('.val').html();
+			var swellHeight = $('.swell').children('.val').html();
 			var swellDirection = $('.dir').html();
-			var period = $('.swell').children('span');
+			var period = $('.swell').children('span').eq(1).html().match(/[0-9]+/);
 			
 
 			//add text to report object
-			report = {
-						"Name" : "SwellNet",
+			var CWreport = {
+						"Name" : "CoastalWatch",
 						"swellHeight": swellHeight,
 						"swellDirection": swellDirection,
-						"period": period[1],
+						"period": period + "s",
 						"windDirection": "fpp",
 						"windSpeed": "bar",
 						"content": "fish"
 					}	
 
-			result.reports.push(report);
-			console.log('scraping coastalwatch');
-			//db.save(result);
-			//result.reports = [];
 
+			result.reports.push(CWreport);
+			console.log('scraping coastalwatch');
 
 		} else {
 			console.log("We’ve encountered an error: " + error);
