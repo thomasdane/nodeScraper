@@ -54,7 +54,9 @@ exports.scrapeCoastalWatch = function () {
 			var swellHeight = $('.swell').children('.val').html();
 			var swellDirection = $('.dir').html();
 			var period = $('.swell').children('span').eq(1).html().match(/[0-9]+/);
-			
+			var windSpeed = $('.wind').children('.val').html();
+			var windDirection = $('.wind').children('.dir').html();
+			var content = $('.starLarge').next('.noMarginBottom').html();
 
 			//add text to report object
 			var CWreport = {
@@ -62,9 +64,9 @@ exports.scrapeCoastalWatch = function () {
 						"swellHeight": swellHeight,
 						"swellDirection": swellDirection,
 						"period": period + "s",
-						"windDirection": "fpp",
-						"windSpeed": "bar",
-						"content": "fish"
+						"windDirection": windDirection,
+						"windSpeed": windSpeed,
+						"content": content
 					}	
 
 
