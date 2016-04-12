@@ -8,7 +8,7 @@ coastalWatchUrl = "http://webcache.googleusercontent.com/search?q=cache:http://w
 
 
 var result = {
-	name: "Eastern Beaches", 
+	name: "easternbeaches", 
 	reports: []
 }
 
