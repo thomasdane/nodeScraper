@@ -52,5 +52,4 @@ new CronJob('*/5 * * * * *', function() {
 
    	 	scraper.save(result);
 	});
-
 }, null, true, 'Australia/Sydney')

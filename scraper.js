@@ -1,5 +1,5 @@
-request = require("request"),
-cheerio = require("cheerio"),
+swellnet = require('./SwellNetSchema.js');
+coastalwatch = require('./CoastalWatchSchema.js');
 db = require("./db");
 
 exports.scrapeSwellNet = function (location) {
@@ -90,4 +90,3 @@ exports.scrapeCoastalWatch = function (location) {
 exports.save = function (result) {
 	db.save(result);
 }
-
