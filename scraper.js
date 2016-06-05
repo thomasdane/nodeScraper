@@ -2,18 +2,10 @@ request = require("request"),
 cheerio = require("cheerio"),
 db = require("./db");
 
-
-swellNetUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches";
-coastalWatchUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra";
-
-
-var result = {
-	name: "easternbeaches", 
-	reports: []
-}
-
-exports.scrapeSwellNet = function () {
-	request(swellNetUrl, function (error, response, body) {
+exports.scrapeSwellNet = function (location) {
+	//console.log(location);
+	//console.log(location.urls.swellNet);
+	request(location.urls.swellNet, function (error, response, body) {
 		if (!error) {
 			$ = cheerio.load(body);
 			
@@ -36,10 +28,12 @@ exports.scrapeSwellNet = function () {
 							"period": period,
 							"windDirection": windArray[1],
 							"windSpeed": windArray[0],
-							"content": content
+							"content": content,
+							"date": new Date()
 						}	
+				console.log('swellnet success');		
 
-				result.reports.push(report);
+				return report;
 			} catch (err) {
 				console.log("Failed to scrape swellnet")
 			}; 
@@ -50,42 +44,50 @@ exports.scrapeSwellNet = function () {
 	});
 }
 
-exports.scrapeCoastalWatch = function () {
-	request(coastalWatchUrl, function (error, response, body) {
+exports.scrapeCoastalWatch = function (location) {
+	//console.log(location);
+	//console.log(location.urls.coastalWatch);
+	request(location.urls.coastalWatch, function (error, response, body) {
 		if (!error) {
 			$ = cheerio.load(body);
 			
-			//get the text using JQuery
-			var swellHeight = $('.swell').children('.val').html();
-			var swellDirection = $('.dir').html();
-			var period = $('.swell').children('span').eq(1).html().match(/[0-9]+/);
-			var windSpeed = $('.wind').children('.val').html();
-			var windDirection = $('.wind').children('.dir').html();
-			var content = $('.starLarge').next('.noMarginBottom').html();
-
-			//add text to report object
-			var CWreport = {
-						"Name" : "CoastalWatch",
-						"swellHeight": swellHeight,
-						"swellDirection": swellDirection,
-						"period": period + "s",
-						"windDirection": windDirection,
-						"windSpeed": windSpeed,
-						"content": content
-					}	
-
-
-			result.reports.push(CWreport);
 			console.log('scraping coastalwatch');
 
+			try {
+				//get the text using JQuery
+				var swellHeight = $('.swell').children('.val').html();
+				var swellDirection = $('.dir').html();
+				var period = $('.swell').children('span').eq(1).html().match(/[0-9]+/);
+				var windSpeed = $('.wind').children('.val').html();
+				var windDirection = $('.wind').children('.dir').html();
+				var content = $('.starLarge').next('.noMarginBottom').html();
+
+				//add text to report object
+				var report = {
+							"Name" : "CoastalWatch",
+							"swellHeight": swellHeight,
+							"swellDirection": swellDirection,
+							"period": period + "s",
+							"windDirection": windDirection,
+							"windSpeed": windSpeed,
+							"content": content,
+							"date": new Date()
+						}	
+
+				console.log('coastalwatch success');		
+				return report;
+
+				} catch (err) {
+				console.log("Failed to scrape coastalwatch")
+			}; 
+			
 		} else {
 			console.log("We’ve encountered an error: " + error);
 		}
 	});
 }
 
-exports.save = function () {
+exports.save = function (result) {
 	db.save(result);
-	result.reports = [];
 }
 
