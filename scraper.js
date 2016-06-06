@@ -2,17 +2,7 @@ request = require("request"),
 cheerio = require("cheerio"),
 db = require("./db");
 
-
-swellNetUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches";
-coastalWatchUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra";
-
-
-var result = {
-	name: "easternbeaches", 
-	reports: []
-}
-
-exports.scrapeSwellNet = function () {
+exports.scrapeSwellNet = function (swellNetUrl) {
 	request(swellNetUrl, function (error, response, body) {
 		if (!error) {
 			$ = cheerio.load(body);
@@ -39,7 +29,8 @@ exports.scrapeSwellNet = function () {
 							"content": content
 						}	
 
-				result.reports.push(report);
+				return report
+
 			} catch (err) {
 				console.log("Failed to scrape swellnet")
 			}; 
@@ -50,10 +41,12 @@ exports.scrapeSwellNet = function () {
 	});
 }
 
-exports.scrapeCoastalWatch = function () {
+exports.scrapeCoastalWatch = function (coastalWatchUrl) {
 	request(coastalWatchUrl, function (error, response, body) {
 		if (!error) {
 			$ = cheerio.load(body);
+			
+			console.log('scraping coastalwatch');
 			
 			//get the text using JQuery
 			var swellHeight = $('.swell').children('.val').html();
@@ -64,7 +57,7 @@ exports.scrapeCoastalWatch = function () {
 			var content = $('.starLarge').next('.noMarginBottom').html();
 
 			//add text to report object
-			var CWreport = {
+			var report = {
 						"Name" : "CoastalWatch",
 						"swellHeight": swellHeight,
 						"swellDirection": swellDirection,
@@ -74,9 +67,7 @@ exports.scrapeCoastalWatch = function () {
 						"content": content
 					}	
 
-
-			result.reports.push(CWreport);
-			console.log('scraping coastalwatch');
+			return report;
 
 		} else {
 			console.log("We’ve encountered an error: " + error);
@@ -84,8 +75,8 @@ exports.scrapeCoastalWatch = function () {
 	});
 }
 
-exports.save = function () {
+exports.save = function (result) {
 	db.save(result);
-	result.reports = [];
+	//result.reports = [];
 }
 
