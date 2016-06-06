@@ -2,7 +2,6 @@ request = require("request"),
 cheerio = require("cheerio");
 db = require("./db");
 
-<<<<<<< HEAD
 exports.scrapeSwellNet = function (swellNetUrl) {
 	request(swellNetUrl, function (error, response, body) {
 		if (!error) {

@@ -16,11 +16,24 @@ new CronJob('*/5 * * * * *', function() {
 	date: new Date()
 	}
 
+	function main (callback) {
+		var sw = scraper.scrapeSwellNet(swellNetUrl);
+		result.reports.push(sw);
+		callback(result);
+	}
+
+	function save(reports)
+	{
+		scraper.save(reports)
+	}
+
+	main(save);
+/*
 	var sw = scraper.scrapeSwellNet(swellNetUrl);
 	result.reports.push(sw);
 	var cw = scraper.scrapeCoastalWatch(coastalWatchUrl);
 	result.reports.push(cw);
 	
-	scraper.save(result);
+	scraper.save(result);*/
 
 }, null, true, 'Australia/Sydney')
