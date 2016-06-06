@@ -15,8 +15,8 @@ new CronJob('*/5 * * * * *', function() {
 				, swellNet: 
 				"http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches"
 			}
-		}, 
-/*		{
+		} 
+/*		,{
 		name: 'northernbeaches',
 			urls: {
 				coastalWatch:
