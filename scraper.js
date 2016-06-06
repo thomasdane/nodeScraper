@@ -1,7 +1,8 @@
 request = require("request"),
-cheerio = require("cheerio"),
+cheerio = require("cheerio");
 db = require("./db");
 
+<<<<<<< HEAD
 exports.scrapeSwellNet = function (swellNetUrl) {
 	request(swellNetUrl, function (error, response, body) {
 		if (!error) {
@@ -26,10 +27,12 @@ exports.scrapeSwellNet = function (swellNetUrl) {
 							"period": period,
 							"windDirection": windArray[1],
 							"windSpeed": windArray[0],
-							"content": content
+							"content": content,
+							"date": new Date()
 						}	
 
-				return report
+				console.log('swellnet success');		
+				return report;
 
 			} catch (err) {
 				console.log("Failed to scrape swellnet")
@@ -47,28 +50,35 @@ exports.scrapeCoastalWatch = function (coastalWatchUrl) {
 			$ = cheerio.load(body);
 			
 			console.log('scraping coastalwatch');
+
+			try {
+				//get the text using JQuery
+				var swellHeight = $('.swell').children('.val').html();
+				var swellDirection = $('.dir').html();
+				var period = $('.swell').children('span').eq(1).html().match(/[0-9]+/);
+				var windSpeed = $('.wind').children('.val').html();
+				var windDirection = $('.wind').children('.dir').html();
+				var content = $('.starLarge').next('.noMarginBottom').html();
+
+				//add text to report object
+				var report = {
+							"Name" : "CoastalWatch",
+							"swellHeight": swellHeight,
+							"swellDirection": swellDirection,
+							"period": period + "s",
+							"windDirection": windDirection,
+							"windSpeed": windSpeed,
+							"content": content,
+							"date": new Date()
+						}	
+
+				console.log('coastalwatch success');		
+				return report;
+
+				} catch (err) {
+				console.log("Failed to scrape coastalwatch")
+			}; 
 			
-			//get the text using JQuery
-			var swellHeight = $('.swell').children('.val').html();
-			var swellDirection = $('.dir').html();
-			var period = $('.swell').children('span').eq(1).html().match(/[0-9]+/);
-			var windSpeed = $('.wind').children('.val').html();
-			var windDirection = $('.wind').children('.dir').html();
-			var content = $('.starLarge').next('.noMarginBottom').html();
-
-			//add text to report object
-			var report = {
-						"Name" : "CoastalWatch",
-						"swellHeight": swellHeight,
-						"swellDirection": swellDirection,
-						"period": period + "s",
-						"windDirection": windDirection,
-						"windSpeed": windSpeed,
-						"content": content
-					}	
-
-			return report;
-
 		} else {
 			console.log("We’ve encountered an error: " + error);
 		}
@@ -77,6 +87,4 @@ exports.scrapeCoastalWatch = function (coastalWatchUrl) {
 
 exports.save = function (result) {
 	db.save(result);
-	//result.reports = [];
 }
-
