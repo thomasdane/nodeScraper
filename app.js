@@ -4,52 +4,36 @@ CronJob = require('cron').CronJob;
 //scrape websites on a timer 
 //new CronJob('0 */15 6-9,1-3 * * *', function() {
 //scrape every minute for testing
-new CronJob('*/5 * * * * *', function() {
 
-	var locations = [
-		{
-			name: 'easternbeaches',
-			urls: {
-				coastalWatch:
-				"http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra"
-				, swellNet: 
-				"http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches"
-			}
-		}, 
-/*		{
-		name: 'northernbeaches',
-			urls: {
-				coastalWatch:
-				"http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/northern-beaches"
-				, swellNet: 
-				"http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/curl-curl"
-			}
-		}*/
-		/*,{
-		name: 'batemansbay',
-			urls: {
-				coastalWatch:
-				"http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/batemans-bay"
-				, swellNet:
-				"http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/shoalhaven-heads"
-			}
-		}	*/
-	]
-
-	locations.forEach(function(location){
-		var result = {
-			name: location.name, 
-			reports: [],
-			date: new Date()
-		}
-
-		var swellNetReport = scraper.scrapeSwellNet(location);
-    	result.reports.push(swellNetReport);
+new CronJob('*/5 * * * * *', function() {	
 	
+	var swellNetUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches";
+	var coastalWatchUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra";
 
-		var coastalWatchReport = scraper.scrapeCoastalWatch(location);
-    	result.reports.push(coastalWatchReport);
+	var result = {
+	name: "easternbeaches", 
+	reports: [], 
+	date: new Date()
+	}
 
-   	 	scraper.save(result);
-	});
+	function main (callback) {
+		var sw = scraper.scrapeSwellNet(swellNetUrl);
+		result.reports.push(sw);
+		callback(result);
+	}
+
+	function save(reports)
+	{
+		scraper.save(reports)
+	}
+
+	main(save);
+/*
+	var sw = scraper.scrapeSwellNet(swellNetUrl);
+	result.reports.push(sw);
+	var cw = scraper.scrapeCoastalWatch(coastalWatchUrl);
+	result.reports.push(cw);
+	
+	scraper.save(result);*/
+
 }, null, true, 'Australia/Sydney')

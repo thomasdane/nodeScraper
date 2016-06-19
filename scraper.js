@@ -1,11 +1,9 @@
-swellnet = require('./SwellNetSchema.js');
-coastalwatch = require('./CoastalWatchSchema.js');
+request = require("request"),
+cheerio = require("cheerio");
 db = require("./db");
 
-exports.scrapeSwellNet = function (location) {
-	//console.log(location);
-	//console.log(location.urls.swellNet);
-	request(location.urls.swellNet, function (error, response, body) {
+exports.scrapeSwellNet = function (swellNetUrl) {
+	request(swellNetUrl, function (error, response, body) {
 		if (!error) {
 			$ = cheerio.load(body);
 			
@@ -31,9 +29,10 @@ exports.scrapeSwellNet = function (location) {
 							"content": content,
 							"date": new Date()
 						}	
-				console.log('swellnet success');		
 
+				console.log('swellnet success');		
 				return report;
+
 			} catch (err) {
 				console.log("Failed to scrape swellnet")
 			}; 
@@ -44,10 +43,8 @@ exports.scrapeSwellNet = function (location) {
 	});
 }
 
-exports.scrapeCoastalWatch = function (location) {
-	//console.log(location);
-	//console.log(location.urls.coastalWatch);
-	request(location.urls.coastalWatch, function (error, response, body) {
+exports.scrapeCoastalWatch = function (coastalWatchUrl) {
+	request(coastalWatchUrl, function (error, response, body) {
 		if (!error) {
 			$ = cheerio.load(body);
 			
