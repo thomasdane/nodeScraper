@@ -2,7 +2,20 @@ request = require("request"),
 cheerio = require("cheerio");
 db = require("./db");
 
-exports.scrapeSwellNet = function (swellNetUrl) {
+
+exports.scrape = function(coastalWatchUrl, swellNetUrl, result){
+	
+	scrapeSwellNet(swellNetUrl, result)
+
+	scrapeCoastalWatch(coastalWatchUrl, result)
+	console.log('result ', result)
+	save(result)
+
+}
+
+
+var scrapeSwellNet = function (swellNetUrl, result) {
+	
 	request(swellNetUrl, function (error, response, body) {
 		if (!error) {
 			$ = cheerio.load(body);
@@ -30,8 +43,13 @@ exports.scrapeSwellNet = function (swellNetUrl) {
 							"date": new Date()
 						}	
 
-				console.log('swellnet success');		
-				return report;
+				console.log('swellnet success');
+				console.log('report is ' + report.swellHeight);		
+
+
+				result.reports.push(report);
+				scrapeCoastalWatch
+				//scraper.save(result);
 
 			} catch (err) {
 				console.log("Failed to scrape swellnet")
@@ -43,7 +61,7 @@ exports.scrapeSwellNet = function (swellNetUrl) {
 	});
 }
 
-exports.scrapeCoastalWatch = function (coastalWatchUrl) {
+var scrapeCoastalWatch = function (coastalWatchUrl) {
 	request(coastalWatchUrl, function (error, response, body) {
 		if (!error) {
 			$ = cheerio.load(body);
@@ -71,8 +89,10 @@ exports.scrapeCoastalWatch = function (coastalWatchUrl) {
 							"date": new Date()
 						}	
 
-				console.log('coastalwatch success');		
-				return report;
+
+
+				console.log('coastalwatch success');
+				result.reports.push(report);
 
 				} catch (err) {
 				console.log("Failed to scrape coastalwatch")
@@ -84,6 +104,6 @@ exports.scrapeCoastalWatch = function (coastalWatchUrl) {
 	});
 }
 
-exports.save = function (result) {
+var save = function (result) {
 	db.save(result);
 }
