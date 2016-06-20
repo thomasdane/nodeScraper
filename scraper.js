@@ -15,58 +15,69 @@ exports.scrape = function(request, result){
 
 		function(callback) {
 			var swellNetUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches";
+			request(swellNetUrl, function(err, response, body) {
+				if (err) { console.log(err); callback(true); return; }
+				obj = JSON.parse(body);
+				callback(false, obj);
+			});
+		},
+
+		function(callback) {
+			var swellNetUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches";
+			request(swellNetUrl, function(err, response, body) {
+				if (err) { console.log(err); callback(true); return; }
+				
+				$ = cheerio.load(body);
+		
+				console.log('scraping swellnet');
 			
-		}
+				try {
+					//get the text using JQuery
+						var swell = $('.views-label-nothing').siblings('.field-content').html();
+						var swellArray = swell.split(/\s(?=[A-Z])/);
+						var period = $('.period').html();
+						var wind = $('.views-label-field-surf-report-wind').siblings('.field-content').html();
+						var windArray = wind.split(/ /);
+						var content = $('.views-field-body').children('.field-content').children('p').html();
+						
+						//add text to report object
+						var report = {
+									"Name" : "SwellNet",
+									"swellHeight": swellArray[0],
+									"swellDirection": swellArray[1].replace(/ /g,''),
+									"period": period,
+									"windDirection": windArray[1],
+									"windSpeed": windArray[0],
+									"content": content,
+									"date": new Date()
+								}	
 
-		swellNetUrl, coastalWatchUrl], scraper.scrapeSwellNet, function(err, results){
-		if ( err ) {
-			console.log("error callback")
-		} else {
-			console.log(results[0]);
-			console.log(results[1]);
-		}
-	})
+						console.log('swellnet success');
+						console.log('report is ' + report.swellHeight);	
+						callback(false, report);
 
-}
+				} catch (err) {
 
+					console.log("Failed to scrape swellnet")
+				};
+			}; 
+			});	
+		},	
+	],
 
+	function(err, results) {
+		if (err) { console.log(err); res.send(500,"Server Er{ror"); return; }
+		res.send(api1:results[0], api2:results[1]}});
+	}
+	);	
+};
+
+/*
 exports.scrapeSwellNet = function (swellNetUrl, callback) {
 	
 	request(swellNetUrl, function (error, response, body) {
 		if (!error) {
-			$ = cheerio.load(body);
 			
-			console.log('scraping swellnet');
-			
-			try {
-				//get the text using JQuery
-				var swell = $('.views-label-nothing').siblings('.field-content').html();
-				var swellArray = swell.split(/\s(?=[A-Z])/);
-				var period = $('.period').html();
-				var wind = $('.views-label-field-surf-report-wind').siblings('.field-content').html();
-				var windArray = wind.split(/ /);
-				var content = $('.views-field-body').children('.field-content').children('p').html();
-				
-				//add text to report object
-				var report = {
-							"Name" : "SwellNet",
-							"swellHeight": swellArray[0],
-							"swellDirection": swellArray[1].replace(/ /g,''),
-							"period": period,
-							"windDirection": windArray[1],
-							"windSpeed": windArray[0],
-							"content": content,
-							"date": new Date()
-						}	
-
-				console.log('swellnet success');
-				console.log('report is ' + report.swellHeight);		
-
-				callback(null, body);
-
-			} catch (err) {
-				console.log("Failed to scrape swellnet")
-			}; 
 
 		} else {
 			console.log("We’ve encountered an error: " + error);
@@ -120,3 +131,4 @@ var scrapeCoastalWatch = function (coastalWatchUrl) {
 var save = function (result) {
 	db.save(result);
 }
+*/
