@@ -1,5 +1,6 @@
 scraper = require('./scraper.js');
 CronJob = require('cron').CronJob;
+async = require("async");
 
 //scrape websites on a timer 
 //new CronJob('0 */15 6-9,1-3 * * *', function() {
@@ -7,7 +8,8 @@ CronJob = require('cron').CronJob;
 
 new CronJob('*/5 * * * * *', function() {
 
-	var x = scraper.scrape();
-	console.log(x);
+	scraper.scrape();
+	
+	
 
 }, null, true, 'Australia/Sydney')
