@@ -3,18 +3,34 @@ cheerio = require("cheerio");
 db = require("./db");
 
 
-exports.scrape = function(coastalWatchUrl, swellNetUrl, result){
+exports.scrape = function(request, result){
 	
-	scrapeSwellNet(swellNetUrl, result)
+	var result = {
+		name: "easternBeaches", 
+		reports: [],
+		date: new Date()
+	}
 
-	scrapeCoastalWatch(coastalWatchUrl, result)
-	console.log('result ', result)
-	save(result)
+	async.parallel([
+
+		function(callback) {
+			var swellNetUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches";
+			
+		}
+
+		swellNetUrl, coastalWatchUrl], scraper.scrapeSwellNet, function(err, results){
+		if ( err ) {
+			console.log("error callback")
+		} else {
+			console.log(results[0]);
+			console.log(results[1]);
+		}
+	})
 
 }
 
 
-var scrapeSwellNet = function (swellNetUrl, result) {
+exports.scrapeSwellNet = function (swellNetUrl, callback) {
 	
 	request(swellNetUrl, function (error, response, body) {
 		if (!error) {
@@ -46,10 +62,7 @@ var scrapeSwellNet = function (swellNetUrl, result) {
 				console.log('swellnet success');
 				console.log('report is ' + report.swellHeight);		
 
-
-				result.reports.push(report);
-				scrapeCoastalWatch
-				//scraper.save(result);
+				callback(null, body);
 
 			} catch (err) {
 				console.log("Failed to scrape swellnet")

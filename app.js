@@ -1,5 +1,6 @@
 scraper = require('./scraper.js');
 CronJob = require('cron').CronJob;
+async = require("async");
 
 //scrape websites on a timer 
 //new CronJob('0 */15 6-9,1-3 * * *', function() {
@@ -7,50 +8,10 @@ CronJob = require('cron').CronJob;
 
 new CronJob('*/5 * * * * *', function() {
 
-	var locations = [
-		{
-			name: 'easternbeaches',
-			urls: {
-				coastalWatch:
-				"http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra"
-				, swellNet: 
-				"http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches"
-			}
-		}, 
-/*		{
-		name: 'northernbeaches',
-			urls: {
-				coastalWatch:
-				"http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/northern-beaches"
-				, swellNet: 
-				"http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/curl-curl"
-			}
-		}*/
-		/*,{
-		name: 'batemansbay',
-			urls: {
-				coastalWatch:
-				"http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/batemans-bay"
-				, swellNet:
-				"http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/shoalhaven-heads"
-			}
-		}	*/
-	]
+	var coastalWatchUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra";
 
-	locations.forEach(function(location){
-		var result = {
-			name: location.name, 
-			reports: [],
-			date: new Date()
-		}
-
-		scraper.scrape(location.urls.coastalWatch, location.urls.swellNet, result);
-	});	
-	
 
 	
-
 	
-		
 
 }, null, true, 'Australia/Sydney')

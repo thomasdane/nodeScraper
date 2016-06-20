@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "scrapes websites",
   "main": "app.js",
-  "author"       : "Tom Dane",
-  "dependencies" : {
-    "request"    : "latest",
-    "cheerio"    : "latest",
-    "cron"       : "latest",
-    "mongojs"    : "latest"
+  "author": "Tom Dane",
+  "dependencies": {
+    "async": "^1.5.2",
+    "cheerio": "latest",
+    "cron": "latest",
+    "mongojs": "latest",
+    "request": "latest"
   }
 }
