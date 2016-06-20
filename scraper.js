@@ -3,10 +3,16 @@ cheerio = require("cheerio");
 async = require("async");
 db = require("./db");
 
-exports.scrape = function () {
+exports.scrape = function (location) {
 
-	var swellNetUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches";
-	var coastalWatchUrl = "http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra";
+	var swellNetUrl = location.urls.swellNet;
+	var coastalWatchUrl = location.urls.coastalWatch;
+	
+	var result = {
+		name: location.name, 
+		reports: [], 
+		date: new Date()
+	}
 
 	var fetch = function(url, callback){
 		request.get(url, function(err, response,body){
@@ -20,14 +26,10 @@ exports.scrape = function () {
 	
 	async.map([coastalWatchUrl, swellNetUrl], fetch, function(err, results){
 		if (err) {
-
 			console.log(err);
-
 		} else {
-
 			cw = cheerio.load(results[0]); //coastalwatch html
 			sn = cheerio.load(results[1]); //swellnet html
-			console.log('fetching reports');
 
 			//get coastalWatch report
 			var swellHeight = cw('.swell').children('.val').html();
@@ -46,9 +48,7 @@ exports.scrape = function () {
 						"content": content,
 						"date": new Date()
 						}	
-			
-			console.log('coastalwatch success');
-			console.log(coastalWatchReport);
+			result.reports.push(coastalWatchReport);
 
 			//get swellNet report	
 			var swell = sn('.views-label-nothing').siblings('.field-content').html();
@@ -67,9 +67,9 @@ exports.scrape = function () {
 						"content": content,
 						"date": new Date()
 					}	
+			result.reports.push(swellNetReport);
 
-			console.log('swellnet success');		
-			console.log(swellNetReport)
+			db.save(result);
 		}
 	});
 }	
