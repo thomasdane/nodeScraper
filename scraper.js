@@ -25,13 +25,13 @@ exports.scrape = function (location) {
 	}
 	
 	var coastalWatchSchema = {
-			swellHeight = ('.swell').children('.val').html();
-			swellDirection = ('.dir').html();
-			period = ('.swell').children('span').eq(1).html().match(/[0-9]+/);
-			windSpeed = ('.wind').children('.val').html();
-			windDirection = ('.wind').children('.dir').html();
-			content = ('.starLarge').next('.noMarginBottom').html();
-			coastalWatchReport = {
+			swellHeight : "('.swell').children('.val').html()",
+			swellDirection : "('.dir').html()",
+			period : "('.swell').children('span').eq(1).html().match(/[0-9]+/)",
+			windSpeed : "('.wind').children('.val').html()",
+			windDirection : "('.wind').children('.dir').html()",
+			content : "('.starLarge').next('.noMarginBottom').html()"
+			/*coastalWatchReport : {
 						"Name" : "CoastalWatch",
 						"swellHeight": swellHeight,
 						"swellDirection": swellDirection,
@@ -40,7 +40,7 @@ exports.scrape = function (location) {
 						"windSpeed": windSpeed,
 						"content": content,
 						"date": new Date()
-						}	
+						}	*/
 	};
 
 
@@ -52,22 +52,32 @@ exports.scrape = function (location) {
 			sn = cheerio.load(results[1]); //swellnet html
 
 			//get coastalWatch report
-			var swellHeight = cw('.swell').children('.val').html();
+			//console.log(coastalWatchSchema);
+
+			var coastalWatchReport = {
+						"Name" : "CoastalWatch",
+						"swellHeight": "swellHeight",
+						"swellDirection": "swellDirection",
+						"period": "period" + "s",
+						"windDirection": "windDirection",
+						"windSpeed": "windSpeed",
+						"content": "content",
+						"date": new Date()
+						}	
+
+			for (var item in coastalWatchSchema) {
+					//console.log(coastalWatchSchema[item])
+					var value = coastalWatchSchema[item]
+					coastalWatchReport[item] = cw(value); 
+			}
+			/*var swellHeight = cw('.swell').children('.val').html();
 			var swellDirection = cw('.dir').html();
 			var period = cw('.swell').children('span').eq(1).html().match(/[0-9]+/);
 			var windSpeed = cw('.wind').children('.val').html();
 			var windDirection = cw('.wind').children('.dir').html();
-			var content = cw('.starLarge').next('.noMarginBottom').html();
-			var coastalWatchReport = {
-						"Name" : "CoastalWatch",
-						"swellHeight": swellHeight,
-						"swellDirection": swellDirection,
-						"period": period + "s",
-						"windDirection": windDirection,
-						"windSpeed": windSpeed,
-						"content": content,
-						"date": new Date()
-						}	
+			var content = cw('.starLarge').next('.noMarginBottom').html();*/
+
+			console.log(coastalWatchReport);
 			result.reports.push(coastalWatchReport);
 
 			//get swellNet report	
