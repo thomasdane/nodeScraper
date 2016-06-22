@@ -1,6 +1,6 @@
-request = require("request"),
-cheerio = require("cheerio");
-async = require("async");
+var request = require("request"),
+cheerio = require("cheerio"),
+async = require("async"),
 db = require("./db");
 
 exports.scrape = function (location) {
@@ -24,6 +24,26 @@ exports.scrape = function (location) {
 		});
 	}
 	
+	var coastalWatchSchema = {
+			swellHeight = ('.swell').children('.val').html();
+			swellDirection = ('.dir').html();
+			period = ('.swell').children('span').eq(1).html().match(/[0-9]+/);
+			windSpeed = ('.wind').children('.val').html();
+			windDirection = ('.wind').children('.dir').html();
+			content = ('.starLarge').next('.noMarginBottom').html();
+			coastalWatchReport = {
+						"Name" : "CoastalWatch",
+						"swellHeight": swellHeight,
+						"swellDirection": swellDirection,
+						"period": period + "s",
+						"windDirection": windDirection,
+						"windSpeed": windSpeed,
+						"content": content,
+						"date": new Date()
+						}	
+	};
+
+
 	async.map([coastalWatchUrl, swellNetUrl], fetch, function(err, results){
 		if (err) {
 			console.log(err);
