@@ -17,8 +17,7 @@ var locationsArray = [
 				"http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/northern-beaches"
 
 			}
-		}
-		/*,{
+		},{
 		name: 'batemansbay',
 			urls: {
 				coastalWatch:
@@ -26,7 +25,7 @@ var locationsArray = [
 				, swellNet:
 				"http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/batemans-bay"
 			}
-		}*/
+		}
 	]
 
 exports.locationsArray = locationsArray;	

@@ -24,80 +24,57 @@ exports.scrape = function (location) {
 		});
 	}
 	
-	var coastalWatchSchema = {
-			swellHeight : "('.swell').children('.val').html()",
-			swellDirection : "('.dir').html()",
-			period : "('.swell').children('span').eq(1).html().match(/[0-9]+/)",
-			windSpeed : "('.wind').children('.val').html()",
-			windDirection : "('.wind').children('.dir').html()",
-			content : "('.starLarge').next('.noMarginBottom').html()"
-			/*coastalWatchReport : {
-						"Name" : "CoastalWatch",
-						"swellHeight": swellHeight,
-						"swellDirection": swellDirection,
-						"period": period + "s",
-						"windDirection": windDirection,
-						"windSpeed": windSpeed,
-						"content": content,
-						"date": new Date()
-						}	*/
-	};
-
-
 	async.map([coastalWatchUrl, swellNetUrl], fetch, function(err, results){
 		if (err) {
 			console.log(err);
 		} else {
+
 			cw = cheerio.load(results[0]); //coastalwatch html
 			sn = cheerio.load(results[1]); //swellnet html
 
 			//get coastalWatch report
-			//console.log(coastalWatchSchema);
+			var CWswellHeight = cw('.swell').children('.val').html();
+			if (CWswellHeight) { //exit when the scrape comes back empty
+				var CWswellDirection = cw('.dir').html();
+				var CWperiod = cw('.swell').children('span').eq(1).html().match(/[0-9]+/);
+				var CWwindSpeed = cw('.wind').children('.val').html();
+				var CWwindDirection = cw('.wind').children('.dir').html();
+				var CWcontent = cw('.starLarge').next('.noMarginBottom').html();
+				var coastalWatchReport = {
+							"Name" : "CoastalWatch",
+							"swellHeight": CWswellHeight,
+							"swellDirection": CWswellDirection,
+							"period": CWperiod + "s",
+							"windDirection": CWwindDirection,
+							"windSpeed": CWwindSpeed,
+							"content": CWcontent,
+							"date": new Date()
+							}
+			};				
 
-			var coastalWatchReport = {
-						"Name" : "CoastalWatch",
-						"swellHeight": "swellHeight",
-						"swellDirection": "swellDirection",
-						"period": "period" + "s",
-						"windDirection": "windDirection",
-						"windSpeed": "windSpeed",
-						"content": "content",
-						"date": new Date()
-						}	
-
-			for (var item in coastalWatchSchema) {
-					//console.log(coastalWatchSchema[item])
-					var value = coastalWatchSchema[item]
-					coastalWatchReport[item] = cw(value); 
-			}
-			/*var swellHeight = cw('.swell').children('.val').html();
-			var swellDirection = cw('.dir').html();
-			var period = cw('.swell').children('span').eq(1).html().match(/[0-9]+/);
-			var windSpeed = cw('.wind').children('.val').html();
-			var windDirection = cw('.wind').children('.dir').html();
-			var content = cw('.starLarge').next('.noMarginBottom').html();*/
-
-			console.log(coastalWatchReport);
-			result.reports.push(coastalWatchReport);
-
-			//get swellNet report	
-			var swell = sn('.views-label-nothing').siblings('.field-content').html();
-			var swellArray = swell.split(/\s(?=[A-Z])/);
-			var period = sn('.period').html();
-			var wind = sn('.views-label-field-surf-report-wind').siblings('.field-content').html();
-			var windArray = wind.split(/ /);
-			var content = sn('.views-field-body').children('.field-content').children('p').html();
-			var swellNetReport = {
-						"Name" : "SwellNet",
-						"swellHeight": swellArray[0],
-						"swellDirection": swellArray[1].replace(/ /g,''),
-						"period": period,
-						"windDirection": windArray[1],
-						"windSpeed": windArray[0],
-						"content": content,
-						"date": new Date()
-					}	
-			result.reports.push(swellNetReport);
+			//get swellNet report
+			//if null, do not save
+			var SNswell = sn('.views-label-nothing').siblings('.field-content').html();
+			if (SNswell) {
+				var SNswellArray = SNswell.split(/\s(?=[A-Z])/);
+				var SNperiod = sn('.period').html();
+				var SNwind = sn('.views-label-field-surf-report-wind').siblings('.field-content').html();
+				var SNwindArray = SNwind.split(/ /)
+				var SNcontent = sn('.views-field-body').children('.field-content').children('p').html();
+				var swellNetReport = {
+							"Name" : "SwellNet",
+							"swellHeight": SNswellArray[0],
+							"swellDirection": SNswellArray[1].replace(/ /g,''),
+							"period": SNperiod,
+							"windDirection": SNwindArray[1],
+							"windSpeed": SNwindArray[0],
+							"content": SNcontent,
+							"date": new Date()
+							}
+			};					
+				
+			if (coastalWatchReport) { result.reports.push(coastalWatchReport) }			
+			if (swellNetReport) {result.reports.push(swellNetReport)} 
 
 			db.save(result);
 		}
