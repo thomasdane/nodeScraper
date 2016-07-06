@@ -24,17 +24,17 @@ exports.scrape = function (location) {
 		});
 	}
 	
-	async.map([coastalWatchUrl, swellNetUrl], fetch, function(err, results){
+	async.map([coastalWatchUrl, swellNetUrl], fetch, function(err, html){
 		if (err) {
 			console.log(err);
 		} else {
 
-			cw = cheerio.load(results[0]); //coastalwatch html
-			sn = cheerio.load(results[1]); //swellnet html
+			cw = cheerio.load(html[0]); //coastalwatch html
+			sn = cheerio.load(html[1]); //swellnet html
 
 			//get coastalWatch report
 			var CWswellHeight = cw('.swell').children('.val').html();
-			if (CWswellHeight) { //exit when the scrape comes back empty
+			if (CWswellHeight) { //check that the scrape is not empty
 				var CWswellDirection = cw('.dir').html();
 				var CWperiod = cw('.swell').children('span').eq(1).html().match(/[0-9]+/);
 				var CWwindSpeed = cw('.wind').children('.val').html();
@@ -50,12 +50,14 @@ exports.scrape = function (location) {
 							"content": CWcontent,
 							"date": new Date()
 							}
+
+			result.reports.push(swellNetReport)
+
 			};				
 
 			//get swellNet report
-			//if null, do not save
 			var SNswell = sn('.views-label-nothing').siblings('.field-content').html();
-			if (SNswell) {
+			if (SNswell) { //check that not empty
 				var SNswellArray = SNswell.split(/\s(?=[A-Z])/);
 				var SNperiod = sn('.period').html();
 				var SNwind = sn('.views-label-field-surf-report-wind').siblings('.field-content').html();
@@ -71,12 +73,11 @@ exports.scrape = function (location) {
 							"content": SNcontent,
 							"date": new Date()
 							}
-			};					
-				
-			if (coastalWatchReport) { result.reports.push(coastalWatchReport) }			
-			if (swellNetReport) {result.reports.push(swellNetReport)} 
 
-			db.save(result);
+			result.reports.push(coastalWatchReport) 				
+			};					
+
+			result.count > 0 ? db.save(result) : console.log("scrape was empty");
 		}
 	});
 }	
