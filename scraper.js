@@ -10,8 +10,7 @@ exports.scrape = function (location) {
 	
 	var result = {
 		name: location.name, 
-		reports: [], 
-		date: new Date()
+		reports: []
 	}
 
 	var fetch = function(url, callback){
