@@ -50,9 +50,7 @@ exports.scrape = function (location) {
 							"content": CWcontent,
 							"date": new Date()
 							}
-
-			result.reports.push(swellNetReport)
-
+				result.reports.push(coastalWatchReport)
 			};				
 
 			//get swellNet report
@@ -73,11 +71,10 @@ exports.scrape = function (location) {
 							"content": SNcontent,
 							"date": new Date()
 							}
-
-			result.reports.push(coastalWatchReport) 				
+				result.reports.push(swellNetReport) 				
 			};					
 
-			result.count > 0 ? db.save(result) : console.log("scrape was empty");
+			result.reports.length > 0 ? db.save(result) : console.log("scrape was empty");
 		}
 	});
 }	
