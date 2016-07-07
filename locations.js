@@ -18,12 +18,12 @@ var locationsArray = [
 
 			}
 		},{
-		name: 'batemansbay',
+		name: 'southcoast',
 			urls: {
 				coastalWatch:
 				"http://webcache.googleusercontent.com/search?q=cache:http://www.coastalwatch.com/surf-cams-surf-reports/nsw/shoalhaven-heads"
 				, swellNet:
-				"http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/batemans-bay"
+				"http://webcache.googleusercontent.com/search?q=cache:http://www.swellnet.com/reports/australia/new-south-wales/wollongong"
 			}
 		}
 	]
