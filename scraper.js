@@ -28,11 +28,11 @@ exports.scrape = function (location) {
 			console.log(err);
 		} else {
 
-			cw = cheerio.load(html[0]); //coastalwatch html
-			sn = cheerio.load(html[1]); //swellnet html
-			serverTime = new Date();
-			offset = new Date();
-			sydneyTime = offset.setHours(serverTime.getHours() + 10);
+			var cw = cheerio.load(html[0]); //coastalwatch html
+			var sn = cheerio.load(html[1]); //swellnet html
+			var serverTime = new Date();
+			var offset = new Date();
+			var sydneyTime = new Date(offset.setHours(serverTime.getHours() + 10));
 
 			//get coastalWatch report
 			var CWswellHeight = cw('.swell').children('.val').html();
