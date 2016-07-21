@@ -4,7 +4,7 @@ locations = require('./locations.js'),
 locationsArray = locations.locationsArray;
 
 //scrape websites on a timer 
-new CronJob('0 */15 6-9,1-3 * * *', function() {
+new CronJob('0 */30 6-9,1-3 * * *', function() {
 //scrape faster for testing
 //new CronJob('*/5 * * * * *', function() {
 
