@@ -35,12 +35,12 @@ exports.scrape = function (location) {
 			var sydneyTime = new Date(offset.setHours(serverTime.getHours() + 10));
 
 			//get coastalWatch report
-			var CWswellHeight = cw('.swell').children('.val').text();
+			var CWswellHeight = cw('.swell').children('.val').html();
 			if (CWswellHeight) { //check that the scrape is not empty
-				var CWswellDirection = cw('.dir').text();
-				var CWperiod = cw('.swell').children('span').eq(1).text().match(/[0-9]+/);
-				var CWwindSpeed = cw('.wind').children('.val').text();
-				var CWwindDirection = cw('.wind').children('.dir').text();
+				var CWswellDirection = cw('.dir').html();
+				var CWperiod = cw('.swell').children('span').eq(1).html().match(/[0-9]+/);
+				var CWwindSpeed = cw('.wind').children('.val').html();
+				var CWwindDirection = cw('.wind').children('.dir').html();
 				var CWcontent = cw('.starLarge').next('.noMarginBottom').text();
 				var coastalWatchReport = {
 							"Name" : "CoastalWatch",
@@ -56,11 +56,11 @@ exports.scrape = function (location) {
 			};				
 
 			//get swellNet report
-			var SNswell = sn('.views-label-nothing').siblings('.field-content').text();
+			var SNswell = sn('.views-label-nothing').siblings('.field-content').html();
 			if (SNswell) { //check that not empty
 				var SNswellArray = SNswell.split(/\s(?=[A-Z])/);
-				var SNperiod = sn('.period').text();
-				var SNwind = sn('.views-label-field-surf-report-wind').siblings('.field-content').text();
+				var SNperiod = sn('.period').html();
+				var SNwind = sn('.views-label-field-surf-report-wind').siblings('.field-content').html();
 				var SNwindArray = SNwind.split(/ /)
 				var SNcontent = sn('.views-field-body').children('.field-content').children('p').text();
 				var swellNetReport = {
