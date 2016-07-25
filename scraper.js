@@ -28,8 +28,11 @@ exports.scrape = function (location) {
 			console.log(err);
 		} else {
 
-			cw = cheerio.load(html[0]); //coastalwatch html
-			sn = cheerio.load(html[1]); //swellnet html
+			var cw = cheerio.load(html[0]); //coastalwatch html
+			var sn = cheerio.load(html[1]); //swellnet html
+			var serverTime = new Date();
+			var offset = new Date();
+			var sydneyTime = new Date(offset.setHours(serverTime.getHours() + 10));
 
 			//get coastalWatch report
 			var CWswellHeight = cw('.swell').children('.val').text();
@@ -47,7 +50,7 @@ exports.scrape = function (location) {
 							"windDirection": CWwindDirection,
 							"windSpeed": CWwindSpeed,
 							"content": CWcontent,
-							"date": new Date()
+							"date": sydneyTime
 							}
 				result.reports.push(coastalWatchReport)
 			};				
@@ -68,7 +71,7 @@ exports.scrape = function (location) {
 							"windDirection": SNwindArray[1],
 							"windSpeed": SNwindArray[0],
 							"content": SNcontent,
-							"date": new Date()
+							"date": sydneyTime
 							}
 				result.reports.push(swellNetReport) 				
 			};					
