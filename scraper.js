@@ -32,13 +32,14 @@ exports.scrape = function (location) {
 			sn = cheerio.load(html[1]); //swellnet html
 
 			//get coastalWatch report
-			var CWswellHeight = cw('.swell').children('.val').html();
-			if (CWswellHeight) { //check that the scrape is not empty
+			var CWcontent = cw('.starLarge').next('.noMarginBottom').html();
+			if (CWcontent) { //check that the scrape is not empty
+				console.log('report exists')
 				var CWswellDirection = cw('.dir').html();
 				var CWperiod = cw('.swell').children('span').eq(1).html().match(/[0-9]+/);
 				var CWwindSpeed = cw('.wind').children('.val').html();
 				var CWwindDirection = cw('.wind').children('.dir').html();
-				var CWcontent = cw('.starLarge').next('.noMarginBottom').html();
+				var CWswellHeight = cw('.swell').children('.val').html();
 				var coastalWatchReport = {
 							"Name" : "CoastalWatch",
 							"swellHeight": CWswellHeight,
@@ -50,16 +51,16 @@ exports.scrape = function (location) {
 							"date": new Date()
 							}
 				result.reports.push(coastalWatchReport)
-			};				
+			} else {console.log('report does not exist')}			
 
 			//get swellNet report
-			var SNswell = sn('.views-label-nothing').siblings('.field-content').html();
-			if (SNswell) { //check that not empty
+				var SNcontent = sn('.views-field-body').children('.field-content').children('p').html();
+			if (SNcontent) { //check that not empty
 				var SNswellArray = SNswell.split(/\s(?=[A-Z])/);
 				var SNperiod = sn('.period').html();
 				var SNwind = sn('.views-label-field-surf-report-wind').siblings('.field-content').html();
 				var SNwindArray = SNwind.split(/ /)
-				var SNcontent = sn('.views-field-body').children('.field-content').children('p').html();
+				var SNswell = sn('.views-label-nothing').siblings('.field-content').html();
 				var swellNetReport = {
 							"Name" : "SwellNet",
 							"swellHeight": SNswellArray[0],
