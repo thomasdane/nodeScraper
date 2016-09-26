@@ -35,7 +35,7 @@ exports.scrape = function (location) {
 			var sydneyTime = new Date(offset.setHours(serverTime.getHours() + 10));
 
 			//get coastalWatch report
-			var CWcontent = cw('.starLarge').next('.noMarginBottom').html();
+			var CWcontent = cw('.starLarge').next('.noMarginBottom').text();
 			if (CWcontent) { //check that the scrape is not empty
 				var CWswellDirection = cw('.dir').html();
 				var CWperiod = cw('.swell').children('span').eq(1).html().match(/[0-9]+/);
@@ -56,7 +56,7 @@ exports.scrape = function (location) {
 			} else {console.log('report was not posted yet')}			
 
 			//get swellNet report
-			var SNcontent = sn('.views-field-body').children('.field-content').children('p').html();
+			var SNcontent = sn('.views-field-body').children('.field-content').children('p').text();
 			if (SNcontent) { //check that not empty
 				var SNswell = sn('.views-label-nothing').siblings('.field-content').html();
 				var SNswellArray = SNswell.split(/\s(?=[A-Z])/);
