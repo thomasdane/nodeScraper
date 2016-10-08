@@ -1,6 +1,6 @@
 var locationsArray = [
 		{
-			name: 'easternbeaches',
+			name: 'eastern beaches',
 			urls: {
 				coastalWatch:
 				"http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra"
@@ -9,7 +9,7 @@ var locationsArray = [
 			}
 		}, 
 		{
-		name: 'northernbeaches',
+		name: 'northern beaches',
 			urls: {
 				coastalWatch:
 				"http://www.coastalwatch.com/surf-cams-surf-reports/nsw/curl-curl"
@@ -18,7 +18,7 @@ var locationsArray = [
 
 			}
 		},{
-		name: 'southcoast',
+		name: 'south coast',
 			urls: {
 				coastalWatch:
 				"http://www.coastalwatch.com/surf-cams-surf-reports/nsw/shoalhaven-heads"

@@ -5,7 +5,7 @@ locationsArray = locations.locationsArray;
 
 //scrape faster for testing
 //new CronJob('*/5 * * * * *', function() {
-new CronJob('0 */15 6,7,8,13,14 * * *', function() {
+new CronJob('0 */30 6,7,8,13,14 * * *', function() {
 	locationsArray.forEach(function(location){
 		scraper.scrape(location);
 	});	
