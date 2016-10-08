@@ -35,13 +35,13 @@ exports.scrape = function (location) {
 			var sydneyTime = new Date(offset.setHours(serverTime.getHours() + 10));
 
 			//get coastalWatch report
-			var CWswellHeight = cw('.swell').children('.val').text();
-			if (CWswellHeight) { //check that the scrape is not empty
-				var CWswellDirection = cw('.dir').text();
-				var CWperiod = cw('.swell').children('span').eq(1).text().match(/[0-9]+/);
-				var CWwindSpeed = cw('.wind').children('.val').text();
-				var CWwindDirection = cw('.wind').children('.dir').text();
-				var CWcontent = cw('.starLarge').next('.noMarginBottom').text();
+			var CWcontent = cw('.starLarge').next('.noMarginBottom').text();
+			if (CWcontent) { //check that the scrape is not empty
+				var CWswellDirection = cw('.dir').html();
+				var CWperiod = cw('.swell').children('span').eq(1).html().match(/[0-9]+/);
+				var CWwindSpeed = cw('.wind').children('.val').html();
+				var CWwindDirection = cw('.wind').children('.dir').html();
+				var CWswellHeight = cw('.swell').children('.val').html();
 				var coastalWatchReport = {
 							"name": "CoastalWatch",
 							"url": location.urls.coastalWatch,
@@ -54,19 +54,19 @@ exports.scrape = function (location) {
 							"date": sydneyTime
 							}
 				result.reports.push(coastalWatchReport)
-			};				
+			} else {console.log('report was not posted yet')}			
 
 			//get swellNet report
-			var SNswell = sn('.views-label-nothing').siblings('.field-content').text();
-			if (SNswell) { //check that not empty
+			var SNcontent = sn('.views-field-body').children('.field-content').children('p').text();
+			if (SNcontent) { //check that not empty
+				var SNswell = sn('.views-label-nothing').siblings('.field-content').html();
 				var SNswellArray = SNswell.split(/\s(?=[A-Z])/);
-				var SNperiod = sn('.period').text();
-				var SNwind = sn('.views-label-field-surf-report-wind').siblings('.field-content').text();
+				var SNperiod = sn('.period').html();
+				var SNwind = sn('.views-label-field-surf-report-wind').siblings('.field-content').html();
 				var SNwindArray = SNwind.split(/ /)
-				var SNcontent = sn('.views-field-body').children('.field-content').children('p').text();
 				var swellNetReport = {
 							"name": "SwellNet",
-							"url": location.url.swellNet,
+							"url": location.urls.swellNet,
 							"swellHeight": SNswellArray[0],
 							"swellDirection": SNswellArray[1].replace(/ /g,''),
 							"period": SNperiod,
@@ -76,9 +76,9 @@ exports.scrape = function (location) {
 							"date": sydneyTime
 							}
 				result.reports.push(swellNetReport) 				
-			};					
+			} else {console.log('report was not posted yet')}			
 
-			result.reports.length > 0 ? db.save(result) : console.log("scrape was empty");
+			result.reports.length > 0 ? db.save(result) : console.log("report not saved because it was empty");
 		}
 	});
 }	
