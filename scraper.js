@@ -43,7 +43,8 @@ exports.scrape = function (location) {
 				var CWwindDirection = cw('.wind').children('.dir').html();
 				var CWswellHeight = cw('.swell').children('.val').html();
 				var coastalWatchReport = {
-							"Name" : "CoastalWatch",
+							"name": "CoastalWatch",
+							"url": location.urls.coastalWatch,
 							"swellHeight": CWswellHeight,
 							"swellDirection": CWswellDirection,
 							"period": CWperiod + "s",
@@ -64,7 +65,8 @@ exports.scrape = function (location) {
 				var SNwind = sn('.views-label-field-surf-report-wind').siblings('.field-content').html();
 				var SNwindArray = SNwind.split(/ /)
 				var swellNetReport = {
-							"Name" : "SwellNet",
+							"name": "SwellNet",
+							"url": location.urls.swellNet,
 							"swellHeight": SNswellArray[0],
 							"swellDirection": SNswellArray[1].replace(/ /g,''),
 							"period": SNperiod,
