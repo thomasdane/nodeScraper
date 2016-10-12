@@ -1,6 +1,6 @@
 var locationsArray = [
 		{
-			name: 'eastern-beaches',
+		name: 'eastern-beaches',
 			urls: {
 				coastalWatch:
 				"http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra"
