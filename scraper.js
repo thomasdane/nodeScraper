@@ -43,6 +43,8 @@ exports.scrape = function (location) {
 				var CWwindDirection = cw('.wind').children('.dir').html();
 				var CWswellHeight = cw('.swell').children('.val').html();
 				var sunrise = cw('.sunrise').html();
+				var sunset = cw('.sunset').html();
+				var tide = cw('.tide').text();
 				var coastalWatchReport = {
 							"name": "CoastalWatch",
 							"url": location.urls.coastalWatch,
@@ -52,6 +54,8 @@ exports.scrape = function (location) {
 							"windDirection": CWwindDirection,
 							"windSpeed": CWwindSpeed,
 							"sunrise" : sunrise,
+							"sunset" : sunset, 
+							"tide" : tide,
 							"content": CWcontent,
 							"date": sydneyTime
 							}
@@ -60,7 +64,7 @@ exports.scrape = function (location) {
 
 			//get swellNet report
 			var SNcontent = sn('.views-field-body').children('.field-content').children('p').text();
-			if (SNcontent) { //check that not empty
+			if (SNcontent) {
 				var SNswell = sn('.views-label-nothing').siblings('.field-content').html();
 				var SNswellArray = SNswell.split(/\s(?=[A-Z])/);
 				var SNperiod = sn('.period').html();
@@ -75,6 +79,8 @@ exports.scrape = function (location) {
 							"windDirection": SNwindArray[1],
 							"windSpeed": SNwindArray[0],
 							"sunrise" : sunrise,
+							"sunset" : sunset, 
+							"tide" : tide,
 							"content": SNcontent,
 							"date": sydneyTime
 							}
