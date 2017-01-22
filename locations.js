@@ -1,15 +1,6 @@
 var locationsArray = [
 		{
-		name: 'eastern-beaches',
-			urls: {
-				coastalWatch:
-				"http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra"
-				, swellNet: 
-				"http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches"
-			}
-		}, 
-		{
-		name: 'northern-beaches',
+		name: 'sydney-east',
 			urls: {
 				coastalWatch:
 				"http://www.coastalwatch.com/surf-cams-surf-reports/nsw/curl-curl"
@@ -18,12 +9,20 @@ var locationsArray = [
 
 			}
 		},{
-		name: 'south-coast',
+		name: 'sydney-north',
 			urls: {
 				coastalWatch:
-				"http://www.coastalwatch.com/surf-cams-surf-reports/nsw/shoalhaven-heads"
+				"http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra"
+				, swellNet: 
+				"http://www.swellnet.com/reports/australia/new-south-wales/eastern-beaches"
+			}
+		},{
+		name: 'sydney-south',
+			urls: {
+				coastalWatch:
+				"http://www.coastalwatch.com/surf-cams-surf-reports/nsw/cronulla"
 				, swellNet:
-				"http://www.swellnet.com/reports/australia/new-south-wales/wollongong"
+				"http://www.swellnet.com/reports/australia/new-south-wales/cronulla"
 			}
 		}
 	]

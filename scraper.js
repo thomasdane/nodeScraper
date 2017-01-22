@@ -34,6 +34,19 @@ exports.scrape = function (location) {
 			var offset = new Date();
 			var sydneyTime = new Date(offset.setHours(serverTime.getHours() + 10));
 
+			var daylightTides = function(sunrise, sunset, tides) {
+				allTides = tides.split(/ \r\n\ /);
+				daylightTide = [];
+
+				for each (var tide in tides) {
+					if (sunrise.getTime() < new Date(tide).getTime() < sunrise.getTime()) {
+						daylightTide.push(tide);
+					}
+				}
+
+				return daylightTide;
+			}	
+
 			//get coastalWatch report
 			var CWcontent = cw('.starLarge').next('.noMarginBottom').text();
 			if (CWcontent) { //check that the scrape is not empty
@@ -42,9 +55,10 @@ exports.scrape = function (location) {
 				var CWwindSpeed = cw('.wind').children('.val').html();
 				var CWwindDirection = cw('.wind').children('.dir').html();
 				var CWswellHeight = cw('.swell').children('.val').html();
-				var sunrise = cw('.sunrise').html();
-				var sunset = cw('.sunset').html();
-				var tide = cw('.tide').text();
+				var sunrise = new Date(cw('.sunrise').html());
+				var sunset = new Date(cw('.sunset').html());
+				var tides = daylightTides(sunrise, sunset, cw('.tide').text());
+
 				var coastalWatchReport = {
 							"name": "CoastalWatch",
 							"url": location.urls.coastalWatch,
@@ -55,7 +69,7 @@ exports.scrape = function (location) {
 							"windSpeed": CWwindSpeed,
 							"sunrise" : sunrise,
 							"sunset" : sunset, 
-							"tide" : tide,
+							"tide" : tides,
 							"content": CWcontent,
 							"date": sydneyTime
 							}
@@ -80,14 +94,14 @@ exports.scrape = function (location) {
 							"windSpeed": SNwindArray[0],
 							"sunrise" : sunrise,
 							"sunset" : sunset, 
-							"tide" : tide,
+							"tide" : tides,
 							"content": SNcontent,
 							"date": sydneyTime
 							}
 				result.reports.push(swellNetReport) 				
 			} else {console.log('report was not posted yet')}			
 
-			result.reports.length > 0 ? db.save(result) : console.log("report not saved because it was empty");
+			result.reports.length > 0 ? db.save(result) : console.log("report was empty");
 		}
 	});
 }	
