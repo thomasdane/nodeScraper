@@ -1,6 +1,6 @@
 var locationsArray = [
 		{
-		name: 'sydney north',
+		name: 'sydney-north',
 			urls: {
 				coastalWatch:
 				"http://www.coastalwatch.com/surf-cams-surf-reports/nsw/curl-curl"
@@ -10,7 +10,7 @@ var locationsArray = [
 			}
 		},
 		{
-		name: 'sydney east',
+		name: 'sydney-east',
 			urls: {
 				coastalWatch:
 				"http://www.coastalwatch.com/surf-cams-surf-reports/nsw/maroubra"
@@ -19,7 +19,7 @@ var locationsArray = [
 			}
 		},
 		{
-		name: 'sydney south',
+		name: 'sydney-south',
 			urls: {
 				coastalWatch:
 				"http://www.coastalwatch.com/surf-cams-surf-reports/nsw/cronulla"
