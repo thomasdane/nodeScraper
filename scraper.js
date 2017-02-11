@@ -1,6 +1,7 @@
 var request = require("request"),
 cheerio = require("cheerio"),
 async = require("async"),
+tides = require("./tides"),
 db = require("./db");
 
 exports.scrape = function (location) {
@@ -34,19 +35,6 @@ exports.scrape = function (location) {
 			var offset = new Date();
 			var sydneyTime = new Date(offset.setHours(serverTime.getHours() + 10));
 
-			var daylightTides = function(sunrise, sunset, tides) {
-				allTides = tides.split(/ \r\n\ /);
-				daylightTide = [];
-
-				for each (var tide in tides) {
-					if (sunrise.getTime() < new Date(tide).getTime() < sunrise.getTime()) {
-						daylightTide.push(tide);
-					}
-				}
-
-				return daylightTide;
-			}	
-
 			//get coastalWatch report
 			var CWcontent = cw('.starLarge').next('.noMarginBottom').text();
 			if (CWcontent) { //check that the scrape is not empty
@@ -57,7 +45,7 @@ exports.scrape = function (location) {
 				var CWswellHeight = cw('.swell').children('.val').html();
 				var sunrise = new Date(cw('.sunrise').html());
 				var sunset = new Date(cw('.sunset').html());
-				var tides = daylightTides(sunrise, sunset, cw('.tide').text());
+				var tide = tides.getDaylightTides(sunrise, sunset, cw('.tide').text());
 
 				var coastalWatchReport = {
 							"name": "CoastalWatch",
