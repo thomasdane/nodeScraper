@@ -8,7 +8,7 @@ exports.getDaylightTides = function (sunrise, sunset, tides) {
 
 	var pureTides = [];
 	for (var tide of tideArray) {
-		let cleanTide = tide.replace(/\s\(.*\)/, '').replace(/\s\s+/g, ' ').replace(/M\s/,'M');
+		var cleanTide = tide.replace(/\s\(.*\)/, '').replace(/\s\s+/g, ' ').replace(/M\s/,'M');
 	    pureTides.push(cleanTide);
 	}
 
