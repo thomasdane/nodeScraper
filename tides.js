@@ -22,5 +22,10 @@ exports.getDaylightTides = function (sunrise, sunset, tides) {
 		}
 	}
 
-	return dayTimeTides
+	var result = "";
+	for (var key in tideObject) {
+		result += tideObject[key] + " " + key + ", "
+	}
+
+	return result;
 }
