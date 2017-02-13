@@ -3,7 +3,7 @@ exports.getDaylightTides = function (sunrise, sunset, tides) {
 	var sunriseUTC = Date.parse(sunrise);
 	var sunsetUTC = Date.parse(sunset);
 
-	var tideArray = tide.split(/\s+(?=[H,L])/);
+	var tideArray = tides.split(/\s+(?=[H,L])/);
 	tideArray.shift();
 
 	var pureTides = [];
