@@ -43,8 +43,8 @@ exports.scrape = function (location) {
 				var CWwindSpeed = cw('.wind').children('.val').html();
 				var CWwindDirection = cw('.wind').children('.dir').html();
 				var CWswellHeight = cw('.swell').children('.val').html();
-				var sunrise = new Date(cw('.sunrise').html());
-				var sunset = new Date(cw('.sunset').html());
+				var sunrise = cw('.sunrise').html();
+				var sunset = cw('.sunset').html();
 				var tide = tides.getDaylightTides(sunrise, sunset, cw('.tide').text());
 
 				var coastalWatchReport = {
