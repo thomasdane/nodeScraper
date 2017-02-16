@@ -3,7 +3,7 @@ exports.getDaylightTides = function (sunrise, sunset, tides) {
 	var sunriseUTC = Date.parse(sunrise);
 	var sunsetUTC = Date.parse(sunset);
 
-	var tideArray = tide.split(/\s+(?=[H,L])/);
+	var tideArray = tides.split(/\s+(?=[H,L])/);
 	tideArray.shift();
 
 	var pureTides = [];
@@ -17,14 +17,14 @@ exports.getDaylightTides = function (sunrise, sunset, tides) {
 		var tideTime = simpleTide.split(/\s(?=[0-9])/);
 		var tide = Date.parse(tideTime[1]);
 
-		if(sunrise.getTime() < tide.getTime() && tide.getTime() < sunset.getTime()){
-			tideObject[tide] = tideTime[0];
+		if(sunriseUTC.getTime() < tide.getTime() && tide.getTime() < sunsetUTC.getTime()){
+			dayTimeTides[tide] = tideTime[0];
 		}
 	}
 
 	var result = "";
-	for (var key in tideObject) {
-		result += tideObject[key] + " " + key + ", "
+	for (var key in dayTimeTides) {
+		result += dayTimeTides[key] + " " + key + ", "
 	}
 
 	return result;
