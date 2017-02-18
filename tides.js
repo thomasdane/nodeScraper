@@ -1,3 +1,5 @@
+var date = require("datejs");
+
 exports.getDaylightTides = function (sunrise, sunset, tides) {
 
 	var sunriseUTC = Date.parse(sunrise);
