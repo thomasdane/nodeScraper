@@ -57,7 +57,7 @@ exports.scrape = function (location) {
 							"windSpeed": CWwindSpeed,
 							"sunrise" : sunrise,
 							"sunset" : sunset, 
-							"tide" : tides,
+							"tide" : tide,
 							"content": CWcontent,
 							"date": sydneyTime
 							}
@@ -82,7 +82,7 @@ exports.scrape = function (location) {
 							"windSpeed": SNwindArray[0],
 							"sunrise" : sunrise,
 							"sunset" : sunset, 
-							"tide" : tides,
+							"tide" : tide,
 							"content": SNcontent,
 							"date": sydneyTime
 							}
