@@ -15,14 +15,23 @@ exports.getDaylightTides = function (sunrise, sunset, tides) {
 	}
 
 	var dayTimeTides = {};
+	var i = 0;
 	for (var simpleTide of pureTides) {
 		var tideTime = simpleTide.split(/\s(?=[0-9])/);
 		var tideTime = tideTime;
 		var tide = Date.parse(tideTime[1]);
+		 
 
 		if(sunriseUTC.getTime() < tide.getTime() && tide.getTime() < sunsetUTC.getTime()){
 			dayTimeTides[tide] = tideTime[0]
 		}
+
+		//if there is only 1 daylight tide, get the next tide
+		if(i == 3 && Object.keys(dayTimeTides).length < 2) {
+			dayTimeTides[tide] = tideTime[0]
+		}
+
+		i++;
 	}
 
 	var result = [];
