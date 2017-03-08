@@ -17,17 +17,20 @@ exports.getDaylightTides = function (sunrise, sunset, tides) {
 	var dayTimeTides = {};
 	for (var simpleTide of pureTides) {
 		var tideTime = simpleTide.split(/\s(?=[0-9])/);
+		var tideTime = tideTime;
 		var tide = Date.parse(tideTime[1]);
 
 		if(sunriseUTC.getTime() < tide.getTime() && tide.getTime() < sunsetUTC.getTime()){
-			dayTimeTides[tide] = tideTime[0];
+			dayTimeTides[tide] = tideTime[0]
 		}
 	}
 
-	var result = "";
+	var result = [];
 	for (var key in dayTimeTides) {
-		result += dayTimeTides[key] + " " + key + ", "
+		timeUTC = new Date(key);
+		time = timeUTC.toString("hh:mm tt")
+		result.push(dayTimeTides[key] + " " + time)
 	}
 
-	return result;
+	return result.slice(0,2).toString();
 }
