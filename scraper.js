@@ -61,28 +61,32 @@ exports.scrape = function (location) {
 			result.reports.push(coastalWatchReport)
 
 			//get swellNet report
-			var sn_content = sn('.views-field-body').children('.field-content').children('p').text();
-			var sn_description = sn_content ? sn_content : "Report not posted yet";
-			var SNswell = sn('.views-label-nothing').siblings('.field-content').html();
-			var SNswellArray = SNswell.split(/\s(?=[A-Z])/);
-			var SNperiod = sn('.period').html();
-			var SNwind = sn('.views-label-field-surf-report-wind').siblings('.field-content').html();
-			var SNwindArray = SNwind.split(/ /)
-			var swellNetReport = {
-				"name": "SwellNet",
-				"url": location.urls.swellNet,
-				"swellHeight": SNswellArray[0],
-				"swellDirection": SNswellArray[1].replace(/ /g,''),
-				"period": SNperiod,
-				"windDirection": SNwindArray[1],
-				"windSpeed": SNwindArray[0],
-				"sunrise" : sunrise,
-				"sunset" : sunset, 
-				"tide" : tide,
-				"content": sn_description,
-				"date": sydneyTime
-			}
-			result.reports.push(swellNetReport) 				
+			//get swellNet report
+			var SNcontent = sn('.views-field-body').children('.field-content').children('p').text();
+			if (SNcontent) {
+				var SNswell = sn('.views-label-nothing').siblings('.field-content').html();
+				var SNswellArray = SNswell.split(/\s(?=[A-Z])/);
+				var SNperiod = sn('.period').html();
+				var SNwind = sn('.views-label-field-surf-report-wind').siblings('.field-content').html();
+				var SNwindArray = SNwind.split(/ /)
+				var swellNetReport = {
+							"name": "SwellNet",
+							"url": location.urls.swellNet,
+							"swellHeight": SNswellArray[0],
+							"swellDirection": SNswellArray[1].replace(/ /g,''),
+							"period": SNperiod,
+							"windDirection": SNwindArray[1],
+							"windSpeed": SNwindArray[0],
+							"sunrise" : sunrise,
+							"sunset" : sunset, 
+							"tide" : tide,
+							"content": SNcontent,
+							"date": sydneyTime
+							}
+				result.reports.push(swellNetReport) 				
+			} else {console.log('swellnet report was not posted yet')}			
+
+			result.reports.length > 1 ? db.save(result) : console.log("reports not posted yet"); 				
 
 			db.save(result);
 		}
