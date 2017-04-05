@@ -56,6 +56,10 @@ exports.scrape = function (location) {
 				"sunset" : sunset, 
 				"tide" : tide,
 				"content": cw_description,
+				"reviews" : {
+					"positive": 1,
+					"negative":1
+				},
 				"date": sydneyTime
 			}
 			result.reports.push(coastalWatchReport)
@@ -81,6 +85,10 @@ exports.scrape = function (location) {
 							"sunset" : sunset, 
 							"tide" : tide,
 							"content": SNcontent,
+							"reviews" : {
+								"positive": 1,
+								"negative":1
+							},
 							"date": sydneyTime
 							}
 				result.reports.push(swellNetReport) 				
